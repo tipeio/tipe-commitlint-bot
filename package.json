@@ -4,9 +4,9 @@
   "description": "Tipe's config and lint github bot!",
   "author": "Olivia Oddo <olivia.oddo@gmail.com>",
   "license": "MIT",
-  "repository": "https://github.com/oliviaoddo/tipe-commitlint-bot.git",
-  "homepage": "https://github.com/oliviaoddo/tipe-commitlint-bot",
-  "bugs": "https://github.com/oliviaoddo/tipe-commitlint-bot/issues",
+  "repository": "https://github.com/tipeio/tipe-cat-bot.git",
+  "homepage": "https://github.com/tipeio/tipe-cat-bot",
+  "bugs": "https://github.com/tipeio/tipe-cat-bot/issues",
   "keywords": [
     "probot",
     "github",
