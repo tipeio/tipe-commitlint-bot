@@ -28,6 +28,9 @@
   "devDependencies": {
     "@commitlint/config-angular": "^7.0.1",
     "@tipe/eslint-config-tipe": "^2.0.0",
+    "eslint-config-prettier": "^3.0.1",
+    "eslint-plugin-jest": "^21.22.0",
+    "eslint-plugin-prettier": "^2.6.2",
     "jest": "^23.5.0",
     "nodemon": "^1.17.2",
     "smee-client": "^1.0.2",

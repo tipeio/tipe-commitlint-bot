@@ -1,6 +1,16 @@
 sudo: false
 language: node_js
+cache:
+  yarn: true
+  directories:
+    - ~/.npm
+    - node_modules
 node_js:
   - "8.3"
+before_install:
+  - export PATH="$HOME/.yarn/bin:$PATH"
+  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.9.4
+install:
+  - yarn --ignore-engines
 notifications:
   disabled: true

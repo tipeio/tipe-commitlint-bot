@@ -16,18 +16,18 @@ Happy coding!
 [ref]: https://help.github.com/articles/changing-a-commit-message/
 [repo]: https://github.com/tipeio/tipe-commitlint-bot
 [issues]: https://github.com/tipeio/tipe-commitlint-bot/issues
-`;
+`
 
 function format(commits) {
-  let message = "";
+  let message = ''
 
   commits.forEach(c => {
-    message += `* Commit: ${c.sha}\n`;
-    message += c.errors.map(e => `  - ✖ ${e.message}\n`).join("");
-    message += c.warnings.map(w => `  - ⚠ ${w.message}\n`).join("");
-  });
+    message += `* Commit: ${c.sha}\n`
+    message += c.errors.map(e => `  - ✖ ${e.message}\n`).join('')
+    message += c.warnings.map(w => `  - ⚠ ${w.message}\n`).join('')
+  })
 
-  return template.replace("<PLACEHOLDER>", message);
+  return template.replace('<PLACEHOLDER>', message)
 }
 
-module.exports = format;
+module.exports = format
