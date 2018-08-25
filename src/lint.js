@@ -14,7 +14,7 @@ async function commitlint(context) {
   const { paginate, issues, repos, pullRequests } = context.github
 
   // save pr info
-  const statusInfo = { ...repo, sha, context: 'tipecatlint' }
+  const statusInfo = { ...repo, sha, context: 'Tipe Cat' }
 
   // create pending status while commits are looked through
   await repos.createStatus({
