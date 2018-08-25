@@ -2,7 +2,7 @@
   "name": "@tipe/cat-bot",
   "version": "1.0.0",
   "description": "Tipe's config and lint github bot!",
-  "author": "Olivia Oddo <olivia.oddo@gmail.com>",
+  "author": "Tipe",
   "license": "MIT",
   "repository": "https://github.com/tipeio/tipe-cat-bot.git",
   "homepage": "https://github.com/tipeio/tipe-cat-bot",
