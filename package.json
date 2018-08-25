@@ -23,10 +23,10 @@
   },
   "dependencies": {
     "@commitlint/core": "^7.0.0",
+    "@commitlint/config-angular": "^7.0.1",
     "probot": "^7.0.0"
   },
   "devDependencies": {
-    "@commitlint/config-angular": "^7.0.1",
     "@tipe/eslint-config-tipe": "^2.0.0",
     "eslint-config-prettier": "^3.0.1",
     "eslint-plugin-jest": "^21.22.0",
