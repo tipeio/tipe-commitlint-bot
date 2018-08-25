@@ -1,5 +1,5 @@
 {
-  "name": "tipe-commitlint-bot",
+  "name": "@tipe/cat-bot",
   "version": "1.0.0",
   "description": "Tipe's commit lint github bot!",
   "author": "Olivia Oddo <olivia.oddo@gmail.com>",
