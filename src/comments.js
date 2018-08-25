@@ -3,7 +3,6 @@
  */
 async function checkComments(issues, pull) {
   const comments = await issues.getComments(pull);
-  console.log("comments", comments)
   return (comment = comments.data.find(
     comment => comment.user.login === process.env.APP_NAME + "[bot]"
   ));

@@ -61,7 +61,6 @@ async function commitlint(context) {
     if(errorCount > 0 || warningCount > 0){
       const message = format(report.commits)
       if(comment){
-        console.log("FOUND THE COMMENT?")
         await issues.editComment({...pull, id: comment.id, body: message})
       } else {
         // create a new bot comment
