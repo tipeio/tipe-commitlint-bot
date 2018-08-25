@@ -15,8 +15,10 @@
   "scripts": {
     "dev": "nodemon",
     "start": "probot run ./index.js",
-    "lint": "standard --fix",
-    "test": "jest && standard",
+    "ci": "npm run lint && npm run test",
+    "test": "NODE_ENV=testing APP_STAGE=testing jest --forceExit --detectOpenHandles --runInBand",
+    "lint": "eslint --ext .js, src",
+    "lint-autofix": "yarn lint --fix",
     "test:watch": "jest --watch --notify --notifyMode=change --coverage"
   },
   "dependencies": {
@@ -33,11 +35,6 @@
   },
   "engines": {
     "node": ">= 8.3.0"
-  },
-  "standard": {
-    "env": [
-      "jest"
-    ]
   },
   "nodemonConfig": {
     "exec": "npm start",
