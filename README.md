@@ -20,4 +20,4 @@ For more, check out the [Contributing Guide](CONTRIBUTING.md).
 
 ## License
 
-[ISC](LICENSE) © 2018 Olivia Oddo <olivia.oddo@gmail.com>
+[MIT](LICENSE) © 2018 Tipe
