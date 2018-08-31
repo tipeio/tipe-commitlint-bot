@@ -4,27 +4,13 @@ const config = require('./config')
 const format = require('./format')
 const checkComments = require('./comments')
 
-async function commitlint(context) {
-  // get info from context
+// paginate all pr commits
+async function lintCommits(context) {
   const pull = context.issue()
-  const { sha } = context.payload.pull_request.head
-  const repo = context.repo()
+  const { paginate, issues, pullRequests } = context.github
+  let lintStatus
 
-  // github api
-  const { paginate, issues, repos, pullRequests } = context.github
-
-  // save pr info
-  const statusInfo = { ...repo, sha, context: 'Tipe Cat' }
-
-  // create pending status while commits are looked through
-  await repos.createStatus({
-    ...statusInfo,
-    state: 'pending',
-    description: 'Waiting for the status to be reported'
-  })
-
-  // paginate all pr commits
-  return paginate(pullRequests.getCommits(pull), async ({ data }) => {
+  await paginate(pullRequests.getCommits(pull), async ({ data }) => {
     // create an empty summary
     const report = { valid: true, commits: [] }
     const { rules } = await load(config)
@@ -48,11 +34,10 @@ async function commitlint(context) {
     }
 
     // create the final status
-    await repos.createStatus({
-      ...statusInfo,
+    lintStatus = {
       state: report.valid ? 'success' : 'failure',
       description: `found ${errorCount} problems, ${warningCount} warnings`
-    })
+    }
 
     // get any previous bot comments
     const comment = await checkComments(issues, pull)
@@ -73,6 +58,8 @@ async function commitlint(context) {
       }
     }
   })
+
+  return lintStatus
 }
 
-module.exports = commitlint
+module.exports = lintCommits
