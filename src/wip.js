@@ -4,6 +4,7 @@ async function checkWIP(context) {
   const isWip = containsWIP(pr.title)
   const newStatus = isWip ? 'pending' : 'success'
   // check to see if status has changed
+  console.log(currentStatus, 'current status')
   const hasChanged = currentStatus !== newStatus
 
   if (!hasChanged) {
@@ -12,7 +13,7 @@ async function checkWIP(context) {
 
   const wipStatus = {
     state: newStatus,
-    description: isWip ? 'work in progress' : 'ready for review'
+    description: isWip ? 'Work in progress!' : 'Ready for review!'
   }
 
   return wipStatus

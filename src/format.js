@@ -1,12 +1,16 @@
 const template = `
+### Commit Lint
+
 There were the following issues with this Pull Request
 
-<PLACEHOLDER>
+<COMMITS_PLACEHOLDER>
 
 You may need to [change the commit messages][ref] to comply with the \
 repository [contributing guidelines][guidelines].
 
+### WIP
 
+<WIP_PLACEHOLDER>
 
 --------
 
@@ -21,16 +25,18 @@ Happy coding!
 [guidelines]: https://github.com/tipeio/tipe-conventions/blob/4987a13f29bc7e5fcbb428dd7b245fedcd5bf6ce/COMMIT_CONVENTION.md#git-commit-message-convention
 `
 
-function format(commits) {
-  let message = ''
+function format(commits, wip) {
+  let commitsMessage = ''
 
   commits.forEach(c => {
-    message += `* Commit: ${c.sha}\n`
-    message += c.errors.map(e => `  - ✖ ${e.message}\n`).join('')
-    message += c.warnings.map(w => `  - ⚠ ${w.message}\n`).join('')
+    commitsMessage += `* Commit: ${c.sha}\n`
+    commitsMessage += c.errors.map(e => `  - ✖ ${e.message}\n`).join('')
+    commitsMessage += c.warnings.map(w => `  - ⚠ ${w.message}\n`).join('')
   })
 
-  return template.replace('<PLACEHOLDER>', message)
+  let commitStr = template.replace('<COMMITS_PLACEHOLDER>', commitsMessage)
+
+  return commitStr.replace('<WIP_PLACEHOLDER>', wip)
 }
 
 module.exports = format
