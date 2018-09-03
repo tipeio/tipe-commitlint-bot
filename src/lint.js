@@ -1,13 +1,11 @@
 const { lint, load } = require('@commitlint/core')
 
 const config = require('./config')
-const format = require('./format')
-const checkComments = require('./comments')
 
 // paginate all pr commits
 async function lintCommits(context) {
   const pull = context.issue()
-  const { paginate, issues, pullRequests } = context.github
+  const { paginate, pullRequests } = context.github
   let lintStatus
 
   await paginate(pullRequests.getCommits(pull), async ({ data }) => {
@@ -36,26 +34,8 @@ async function lintCommits(context) {
     // create the final status
     lintStatus = {
       state: report.valid ? 'success' : 'failure',
-      description: `found ${errorCount} problems, ${warningCount} warnings`
-    }
-
-    // get any previous bot comments
-    const comment = await checkComments(issues, pull)
-
-    // write comment with details
-    if (errorCount > 0 || warningCount > 0) {
-      const message = format(report.commits)
-      if (comment) {
-        await issues.editComment({ ...pull, id: comment.id, body: message })
-      } else {
-        // create a new bot comment
-        await issues.createComment({ ...pull, body: message })
-      }
-    } else {
-      if (comment) {
-        // delete old bot comment if there are no issues
-        await issues.deleteComment({ ...pull, commend_id: comment.id })
-      }
+      description: `found ${errorCount} problems, ${warningCount} warnings`,
+      report
     }
   })
 

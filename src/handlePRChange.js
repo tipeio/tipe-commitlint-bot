@@ -1,26 +1,12 @@
 const lintCommits = require('./lint')
 const checkWIP = require('./wip')
+const format = require('./format')
 
 async function handlePRChange(context) {
-  // get info from context
-  const { sha } = context.payload.pull_request.head
-  const repo = context.repo()
-
-  // github api
-  const { repos } = context.github
-
-  // save pr info
-  const statusInfo = { ...repo, sha, context: 'Tipe Cat' }
-
-  // create pending status while commits are looked through
-  await repos.createStatus({
-    ...statusInfo,
-    state: 'pending',
-    description: 'Waiting for the status to be reported'
-  })
-
   const lintStatus = await lintCommits(context)
   const wipStatus = await checkWIP(context)
+  const pr = context.payload.pull_request
+  const message = format(lintStatus.report.commits, wipStatus.description)
 
   let finalState
   if (lintStatus.state === 'failure') {
@@ -30,13 +16,38 @@ async function handlePRChange(context) {
   } else {
     finalState = 'success'
   }
-  await repos.createStatus({
-    ...statusInfo,
-    state: finalState,
-    description: `Lint: ${lintStatus.description}. WIP: ${
-      wipStatus.description
-    }.`
-  })
+
+  context.github.checks
+    .create(
+      context.repo({
+        name: 'Tipe Cat',
+        head_branch: pr.head.ref,
+        head_sha: pr.head.sha,
+        status: 'completed',
+        conclusion: finalState,
+        completed_at: new Date(),
+        output: {
+          title: 'TipeCat',
+          summary: message
+        }
+      })
+    )
+    .catch(function checkFails(error) {
+      if (error.code === 403) {
+        console.log('resource not accessible, creating status instead')
+        // create status if creating check fails
+        const params = {
+          sha: pr.head.sha,
+          context: 'Tipe Cat',
+          state: finalState,
+          description: `Lint: ${lintStatus.description}. WIP: ${
+            wipStatus.description
+          }.`,
+          target_url: 'https://github.com/tipecat'
+        }
+        return context.github.repos.createStatus(context.repo(params))
+      }
+    })
 }
 
 module.exports = handlePRChange
