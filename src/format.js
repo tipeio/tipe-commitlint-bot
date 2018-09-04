@@ -1,7 +1,7 @@
 const template = `
 ### Commit Lint
 
-There were the following issues with this Pull Request
+<COMMIY_ERR_SUM>
 
 <COMMITS_PLACEHOLDER>
 
@@ -25,18 +25,19 @@ Happy coding!
 [guidelines]: https://github.com/tipeio/tipe-conventions/blob/4987a13f29bc7e5fcbb428dd7b245fedcd5bf6ce/COMMIT_CONVENTION.md#git-commit-message-convention
 `
 
-function format(commits, wip) {
+function format(report, wip) {
   let commitsMessage = ''
 
-  commits.forEach(c => {
+  report.commits.forEach(c => {
     commitsMessage += `* Commit: ${c.sha}\n`
     commitsMessage += c.errors.map(e => `  - ✖ ${e.message}\n`).join('')
     commitsMessage += c.warnings.map(w => `  - ⚠ ${w.message}\n`).join('')
   })
 
-  let commitStr = template.replace('<COMMITS_PLACEHOLDER>', commitsMessage)
-
-  return commitStr.replace('<WIP_PLACEHOLDER>', wip)
+  return template
+    .replace('<COMMIY_ERR_SUM>', report.errSum)
+    .replace('<COMMITS_PLACEHOLDER>', commitsMessage)
+    .replace('<WIP_PLACEHOLDER>', wip)
 }
 
 module.exports = format
