@@ -2,7 +2,7 @@ async function checkWIP(context) {
   const { pull_request: pr } = context.payload
   const currentStatus = await getCurrentStatus(context)
   const isWip = containsWIP(pr.title)
-  const newStatus = isWip ? 'pending' : 'success'
+  const newStatus = isWip ? 'failure' : 'success'
   // check to see if status has changed
   console.log(currentStatus, 'current status')
   const hasChanged = currentStatus !== newStatus

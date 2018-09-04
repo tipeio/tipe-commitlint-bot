@@ -6,15 +6,11 @@ async function handlePRChange(context) {
   const lintStatus = await lintCommits(context)
   const wipStatus = await checkWIP(context)
   const pr = context.payload.pull_request
-  const message = format(lintStatus.report.commits, wipStatus.description)
+  const message = format(lintStatus.report, wipStatus.description)
 
-  let finalState
-  if (lintStatus.state === 'failure') {
+  let finalState = 'success'
+  if (lintStatus.state === 'failure' || wipStatus.state === 'failure') {
     finalState = 'failure'
-  } else if (wipStatus.state === 'pending') {
-    finalState = 'pending'
-  } else {
-    finalState = 'success'
   }
 
   context.github.checks

@@ -30,11 +30,10 @@ async function lintCommits(context) {
         report.commits.push({ sha: d.sha, errors, warnings })
       }
     }
-
+    report.errSum = `Found ${errorCount} problems, and ${warningCount} warnings.`
     // create the final status
     lintStatus = {
       state: report.valid ? 'success' : 'failure',
-      description: `found ${errorCount} problems, ${warningCount} warnings`,
       report
     }
   })
