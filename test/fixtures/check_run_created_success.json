@@ -1,0 +1,12 @@
+{
+  "name": "TipeCat",
+  "head_branch": "great-pr",
+  "head_sha": "34c5c7793cb3b279e22454cb6750c80560547b3a",
+  "status": "completed",
+  "conclusion": "success",
+  "completed_at": "2018-07-14T18:18:54.156Z",
+  "output": {
+    "title": "TipeCat",
+    "summary": "All checks have passed"
+  }
+}

@@ -1,0 +1,13 @@
+
+{
+  "name": "TipeCat",
+  "head_branch": "wip pr",
+  "head_sha": "e76ed6025cec8879c75454a6efd6081d46de4c94",
+  "status": "completed",
+  "conclusion": "failure",
+  "completed_at": "2018-07-14T18:18:54.156Z",
+  "output": {
+    "title": "TipeCat",
+    "summary": "wip in progress"
+  }
+}
