@@ -13,7 +13,8 @@ async function checkWIP(context) {
 
   const wipStatus = {
     state: newStatus,
-    description: isWip ? 'Work in progress!' : 'Ready for review!'
+    description: isWip ? 'Work in progress!' : 'Ready for review!',
+    emojiStatus: isWip ? '❌' : '✅'
   }
 
   return wipStatus
