@@ -1,5 +1,5 @@
 const template = `
-### Commit Lint
+### Commit Lint <COMMIT_LINT_STATUS>
 
 <COMMIY_ERR_SUM>
 
@@ -8,7 +8,7 @@ const template = `
 You may need to [change the commit messages][ref] to comply with the \
 repository [contributing guidelines][guidelines].
 
-### WIP
+### WIP <WIP_STATUS>
 
 <WIP_PLACEHOLDER>
 
@@ -25,19 +25,21 @@ Happy coding!
 [guidelines]: https://github.com/tipeio/tipe-conventions/blob/4987a13f29bc7e5fcbb428dd7b245fedcd5bf6ce/COMMIT_CONVENTION.md#git-commit-message-convention
 `
 
-function format(report, wip) {
+function format(lintStatus, wipStatus) {
   let commitsMessage = ''
 
-  report.commits.forEach(c => {
+  lintStatus.report.commits.forEach(c => {
     commitsMessage += `* Commit: ${c.sha}\n`
     commitsMessage += c.errors.map(e => `  - ✖ ${e.message}\n`).join('')
     commitsMessage += c.warnings.map(w => `  - ⚠ ${w.message}\n`).join('')
   })
 
   return template
-    .replace('<COMMIY_ERR_SUM>', report.errSum)
+    .replace('<COMMIT_LINT_STATUS>', lintStatus.emojiStatus)
+    .replace('<COMMIY_ERR_SUM>', lintStatus.errSum)
     .replace('<COMMITS_PLACEHOLDER>', commitsMessage)
-    .replace('<WIP_PLACEHOLDER>', wip)
+    .replace('<WIP_PLACEHOLDER>', wipStatus.description)
+    .replace('<WIP_STATUS>', wipStatus.emojiStatus)
 }
 
 module.exports = format
