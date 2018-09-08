@@ -1,88 +1,77 @@
-// Packages
-const { Application } = require('probot')
-// Update necessary env vars
-process.env.APP_NAME = 'tipecat-dev'
+const lintCommits = require('../src/lint')
 
-// Ours
-const plugin = require('../index')
-const events = require('./events')
-
-const repo = { owner: 'user', repo: 'repo' }
-
-let app, github
-
-describe('the commit lint function', () => {
-  beforeEach(() => {
-    // Here we create a robot instance
-    app = new Application()
-    app.load(plugin)
-
-    // Mock GitHub client
-    github = {
-      issues: {
-        createComment: jest.fn(),
-        editComment: jest.fn(),
-        deleteComment: jest.fn(),
-        getComments: jest.fn().mockReturnValue({
-          data: [
-            {
-              id: 1,
-              user: {
-                login: `${process.env.APP_NAME}[bot]`,
-                id: 2,
-                type: 'Bot'
-              }
-            }
-          ]
-        })
-      },
-      repos: {
-        createStatus: jest.fn(),
-        getCombinedStatusForRef: jest.fn().mockRejectedValue({
-          data: {
-            statuses: [{}]
-          }
-        })
-      },
-      pullRequests: {
-        getCommits: jest
-          .fn()
-          .mockReturnValueOnce({
-            data: [{ sha: 'abcd', commit: { message: 'good: message' } }]
-          })
-          .mockReturnValue({
-            data: [{ sha: 'abcd', commit: { message: 'bad message' } }]
-          })
-      },
-      paginate: (fn, cb) => cb(fn)
+const context = {
+  payload: {
+    pull_request: {
+      head: {
+        sha: '9d3adf3c6fdca6c2df2467d35b30d6e5a47bc817'
+      }
     }
-    // Passes the mocked out GitHub API into out robot instance
-    app.auth = () => Promise.resolve(github)
+  },
+  github: {
+    repos: {
+      getCombinedStatusForRef: jest
+        .fn()
+        .mockReturnValue({ data: { statuses: [{ context: 'success' }] } })
+    },
+    paginate: (fn, cb) => cb(fn),
+    pullRequests: {
+      getCommits: jest
+        .fn()
+        .mockReturnValueOnce({
+          data: [{ sha: 'abcd', commit: { message: 'good: message' } }]
+        })
+        .mockReturnValue({
+          data: [{ sha: 'abcde', commit: { message: 'bad message' } }]
+        })
+    }
+  },
+  repo: jest.fn(),
+  issue: jest
+    .fn()
+    .mockReturnValue({ number: 14, owner: 'oliviaoddo', repo: 'test' })
+}
+describe('The wip function', () => {
+  test('should return success', async () => {
+    context.payload.pull_request.title = 'I am Wip'
+    const response = await lintCommits(context)
+    expect(response).toEqual({
+      state: 'success',
+      errSum: `Found 0 problems, and 0 warnings.`,
+      emojiStatus: '✅',
+      report: { valid: true, commits: [] }
+    })
   })
-
-  test.skip('status update to pending', async () => {
-    await app.receive(events.opened)
-    expect(github.repos.createStatus).toHaveBeenCalledWith(
-      expect.objectContaining({ state: 'pending' })
-    )
-  })
-
-  test('fetching the list of commits', async () => {
-    await app.receive(events.opened)
-    expect(github.pullRequests.getCommits).toHaveBeenCalledWith(
-      expect.objectContaining({ ...repo, number: 1 })
-    )
-  })
-
-  test.skip('remove comment when no errors/warnings', async () => {
-    await app.receive(events.opened)
-    expect(github.issues.createComment).not.toHaveBeenCalled()
-    expect(github.issues.editComment).not.toHaveBeenCalled()
-    expect(github.issues.getComments).toHaveBeenCalled()
-    expect(github.issues.deleteComment).toHaveBeenCalled()
-
-    await app.receive(events.opened)
-    expect(github.issues.editComment).toHaveBeenCalled()
-    expect(github.issues.getComments).toHaveBeenCalled()
+  test('should return failure', async () => {
+    context.payload.pull_request.title = 'best pr'
+    const response = await lintCommits(context)
+    expect(response).toEqual({
+      state: 'failure',
+      errSum: `Found 2 problems, and 0 warnings.`,
+      emojiStatus: '❌',
+      report: {
+        valid: false,
+        commits: [
+          {
+            errors: [
+              {
+                level: 2,
+                message: 'message may not be empty',
+                name: 'subject-empty',
+                valid: false
+              },
+              {
+                level: 2,
+                message: 'type may not be empty',
+                name: 'type-empty',
+                valid: false
+              }
+            ],
+            sha: 'abcde',
+            warnings: []
+          }
+        ]
+      }
+    })
   })
 })
