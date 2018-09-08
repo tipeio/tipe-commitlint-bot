@@ -15,7 +15,15 @@ const data = {
   }
 }
 
-const context = {
+const params = {
+  sha: data.head_sha,
+  context: 'TipeCat',
+  state: 'success',
+  description: `Lint: the lint status. WIP: the wip status.`,
+  target_url: 'https://github.com/tipecat'
+}
+
+const successContext = {
   payload: {
     pull_request: {
       head: {
@@ -39,10 +47,34 @@ const context = {
   })
 }
 
+const errorContext = {
+  payload: {
+    pull_request: {
+      head: {
+        ref: data.head_branch,
+        sha: data.head_sha
+      }
+    }
+  },
+  github: {
+    checks: {
+      create: jest.fn().mockRejectedValue({ code: 403 })
+    },
+    repos: {
+      createStatus: jest.fn()
+    }
+  },
+  repo: jest.fn().mockReturnValue({
+    owner: 'oliviaoddo',
+    repo: 'test',
+    ...params
+  })
+}
+
 describe('The createCheck function', () => {
   test('should call the github check create function', async () => {
-    await createCheck(context, 'success', message)
-    expect(context.github.checks.create).toHaveBeenCalledWith(
+    await createCheck(successContext, 'success', message)
+    expect(successContext.github.checks.create).toHaveBeenCalledWith(
       expect.objectContaining({
         owner: 'oliviaoddo',
         repo: 'test',
@@ -51,7 +83,20 @@ describe('The createCheck function', () => {
     )
   })
   test('should call the github repo function', async () => {
-    await createCheck(context, 'success', message)
-    expect(context.repo).toHaveBeenCalledWith(expect.objectContaining(data))
+    await createCheck(successContext, 'success', message)
+    expect(successContext.repo).toHaveBeenCalledWith(
+      expect.objectContaining(data)
+    )
+  })
+
+  test('should call createStatus on 403', async () => {
+    await createCheck(errorContext, 'success', message)
+    expect(errorContext.github.repos.createStatus).toHaveBeenCalledWith(
+      expect.objectContaining({
+        ...params,
+        owner: 'oliviaoddo',
+        repo: 'test'
+      })
+    )
   })
 })
