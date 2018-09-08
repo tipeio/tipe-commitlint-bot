@@ -1,37 +1,48 @@
 const format = require('../src/format')
 
-const commits = [
-  // #1
-  [
-    {
-      sha: 'abc',
-      errors: [],
-      warnings: [{ message: 'warning message' }]
-    }
-  ],
+const lintStatus = {
+  report: {
+    commits: []
+  },
+  emojiStatus: '✅',
+  errSum: `Found 2problems, and 0 warnings.`
+}
 
-  // #2
-  [
-    {
-      sha: 'def',
-      errors: [{ message: 'error message' }],
-      warnings: [{ message: 'warning message' }]
-    }
-  ]
-]
+const wipStatus = {
+  description: 'Work in progress!',
+  emojiStatus: '❌'
+}
 
 describe('The format function', () => {
-  test('repalces placeholder', () => {
-    expect(format(commits[0])).not.toMatch(/PLACEHOLDER/)
+  test('replaces placeholders', () => {
+    expect(format(lintStatus, wipStatus)).not.toMatch(/COMMITS_PLACEHOLDER/)
+    expect(format(lintStatus, wipStatus)).not.toMatch(/COMMIT_LINT_STATUS/)
+    expect(format(lintStatus, wipStatus)).not.toMatch(/COMMIT_ERR_SUM/)
+    expect(format(lintStatus, wipStatus)).not.toMatch(/WIP_STATUS/)
+    expect(format(lintStatus, wipStatus)).not.toMatch(/WIP_PLACEHOLDER/)
   })
 
   test('generates comment body', () => {
     // #1
-    expect(format(commits[0])).toMatch(/Commit: abc/)
-    expect(format(commits[0])).toMatch(/warning message/)
+    lintStatus.report.commits = [
+      {
+        sha: 'abc',
+        errors: [],
+        warnings: [{ message: 'warning message' }]
+      }
+    ]
+    expect(format(lintStatus, wipStatus)).toMatch(/Commit: abc/)
+    expect(format(lintStatus, wipStatus)).toMatch(/warning message/)
     // #2
-    expect(format(commits[1])).toMatch(/Commit: def/)
-    expect(format(commits[1])).toMatch(/error message/)
-    expect(format(commits[1])).toMatch(/warning message/)
+    lintStatus.report.commits = [
+      {
+        sha: 'def',
+        errors: [{ message: 'error message' }],
+        warnings: [{ message: 'warning message' }]
+      }
+    ]
+    expect(format(lintStatus, wipStatus)).toMatch(/Commit: def/)
+    expect(format(lintStatus, wipStatus)).toMatch(/error message/)
+    expect(format(lintStatus, wipStatus)).toMatch(/warning message/)
   })
 })
