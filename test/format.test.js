@@ -15,7 +15,7 @@ const wipStatus = {
 
 describe('The format function', () => {
   test('replaces placeholders', () => {
-    expect(format(lintStatus, wipStatus)).not.toMatch(/COMMITS_PLACEHOLDER/)
+    expect(format(lintStatus, wipStatus)).not.toMatch(/COMMIT_PLACEHOLDER/)
     expect(format(lintStatus, wipStatus)).not.toMatch(/COMMIT_LINT_STATUS/)
     expect(format(lintStatus, wipStatus)).not.toMatch(/COMMIT_ERR_SUM/)
     expect(format(lintStatus, wipStatus)).not.toMatch(/WIP_STATUS/)

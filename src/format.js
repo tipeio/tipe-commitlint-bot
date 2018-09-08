@@ -1,9 +1,9 @@
 const template = `
 ### Commit Lint <COMMIT_LINT_STATUS>
 
-<COMMIY_ERR_SUM>
+<COMMIT_ERR_SUM>
 
-<COMMITS_PLACEHOLDER>
+<COMMIT_PLACEHOLDER>
 
 You may need to [change the commit messages][ref] to comply with the \
 repository [contributing guidelines][guidelines].
@@ -36,8 +36,8 @@ function format(lintStatus, wipStatus) {
 
   return template
     .replace('<COMMIT_LINT_STATUS>', lintStatus.emojiStatus)
-    .replace('<COMMIY_ERR_SUM>', lintStatus.errSum)
-    .replace('<COMMITS_PLACEHOLDER>', commitsMessage)
+    .replace('<COMMIT_ERR_SUM>', lintStatus.errSum)
+    .replace('<COMMIT_PLACEHOLDER>', commitsMessage)
     .replace('<WIP_PLACEHOLDER>', wipStatus.description)
     .replace('<WIP_STATUS>', wipStatus.emojiStatus)
 }
