@@ -12,10 +12,13 @@ async function handlePRChange(context) {
     ref: pr.head.ref
   }
 
-  const config = await context.github.repos.getContent(context.repo(params))
-
-  let buff = Buffer.from(config.data.content, 'base64')
-  fs.writeFileSync('src/commitlint.config.js', buff)
+  try {
+    const config = await context.github.repos.getContent(context.repo(params))
+    let buff = Buffer.from(config.data.content, 'base64')
+    fs.writeFileSync('src/commitlint.config.js', buff)
+  } catch (e) {
+    console.log('using default config')
+  }
 
   const lintStatus = await lintCommits(context)
   const wipStatus = await checkWIP(context)
