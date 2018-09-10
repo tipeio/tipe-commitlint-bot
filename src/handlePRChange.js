@@ -2,8 +2,21 @@ const lintCommits = require('./lint')
 const checkWIP = require('./wip')
 const format = require('./format')
 const createCheck = require('./createCheck')
+const fs = require('fs')
 
 async function handlePRChange(context) {
+  const pr = context.payload.pull_request
+
+  const params = {
+    path: 'commitlint.config.js',
+    ref: pr.head.ref
+  }
+
+  const config = await context.github.repos.getContent(context.repo(params))
+
+  let buff = Buffer.from(config.data.content, 'base64')
+  fs.writeFileSync('src/commitlint.config.js', buff)
+
   const lintStatus = await lintCommits(context)
   const wipStatus = await checkWIP(context)
   const message = format(lintStatus, wipStatus)

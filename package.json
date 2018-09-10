@@ -22,8 +22,6 @@
     "test:watch": "jest --watch --notify --notifyMode=change --coverage"
   },
   "dependencies": {
-    "@commitlint/core": "^7.0.0",
-    "@commitlint/config-angular": "^7.0.1",
     "probot": "^7.0.0"
   },
   "devDependencies": {
