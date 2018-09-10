@@ -1,7 +1,8 @@
 const { lint, load } = require('@commitlint/core')
 
-const config = require('./config')
+const config = require('./commitlint.config.js')
 
+console.log(config)
 // paginate all pr commits
 async function lintCommits(context) {
   const pull = context.issue()
