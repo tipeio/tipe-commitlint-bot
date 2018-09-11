@@ -1,13 +1,7 @@
 
-### 🆕🐥☝ First Timers Only.
+### 🆕🐥☝ First Tipers Only.
 
 This issue is reserved for people who never contributed to Open Source before. We know that the process of creating a pull request is the biggest barrier for new contributors. This issue is for you 💝
-
-[About First Timers Only](http://www.firsttimersonly.com/).
-
-### 🤔 What you will need to know.
-
-Nothing. This issue is meant to welcome you to Open Source :) We are happy to walk you through the process.
 
 ### 📋 Step by Step
 
@@ -40,4 +34,4 @@ $DIFF
 Leave a comment below!
 
 
-This issue was created by [First-Timers-Bot](https://github.com/hoodiehq/first-timers-bot).
+This issue was created by [Tipe-Cat-Bot](https://github.com/tipeio/tipe-cat-bot).
