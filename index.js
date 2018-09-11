@@ -1,4 +1,5 @@
-const handlePRChange = require('./src/handlePRChange')
+const handlePRChange = require('./src/handle-pr-change')
+const handleCreate = require('./src/handle-create')
 
 module.exports = app => {
   // For more information on building apps:
