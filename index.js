@@ -7,4 +7,5 @@ module.exports = app => {
   app.on('pull_request.opened', handlePRChange)
   app.on('pull_request.edited', handlePRChange)
   app.on('pull_request.synchronize', handlePRChange)
+  app.on('create', handleCreate)
 }

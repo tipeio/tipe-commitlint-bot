@@ -16,11 +16,7 @@ const template = readFileSync(
 
 async function handleCreateEvent(context) {
   const { ref, ref_type: refType, repository } = context.payload
-  console.log(context.config.toString())
-  const config = await context.config(
-    'config.yml'
-  )
-  console.log(config, "CONFIG")
+  const config = await context.config('first-timers.yml', {labels: ['first-tipers-only'], repository: repository.name})
   const debug = getDebug(
     `probot:first-timers:${repository.full_name.toLowerCase()}`
   )
@@ -31,8 +27,8 @@ async function handleCreateEvent(context) {
     debug('ignoring: not a branch')
     return
   }
-  if (!/^first-timers-/.test(ref)) {
-    debug(`ignoring: "${ref}" does not match /^first-timers-/`)
+  if (!/^first-tipers-/.test(ref)) {
+    debug(`ignoring: "${ref}" does not match /^first-tipers-/`)
     return
   }
 
