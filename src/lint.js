@@ -26,15 +26,17 @@ async function lintCommits(context) {
     let buff = Buffer.from(customConfig.data.content, 'base64')
     fs.writeFileSync('src/commitlint-custom.config.js', buff)
   } catch (e) {
-    context.log('using default config')
+    context.log('Using default config')
   }
 
-  try {
+  if(fs.existsSync('src/commitlint-custom.config.js')){
     config = require('./commitlint-custom.config.js')
-
-  } catch (e) {
+    if(config.extends){
+      context.log('Extends not supported, using default config.')
+      config = require('./commitlint.config.js')
+    }  
+  } else {
     config = require('./commitlint.config.js')
-
   }
 
   await paginate(pullRequests.getCommits(pull), async ({ data }) => {
