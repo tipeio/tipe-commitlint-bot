@@ -24,6 +24,9 @@ const api = {
   }
 
   await getBranch(state)
+  expect(api.repos.getBranch.mock.calls[0][0].owner).toEqual('owner')
+  expect(api.repos.getBranch.mock.calls[0][0].repo).toEqual('installRepo')
+  expect(api.repos.getBranch.mock.calls[0][0].branch).toEqual('branch')
   expect(state.sha).toBe('sha')
 })
 
