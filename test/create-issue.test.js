@@ -5,7 +5,7 @@ describe('Create Issue', () => {
 
     const api = {
       issues: {
-        create: jest.fn((vals) => Promise.resolve({...vals, data: {html_url: 'html_url'}}))
+        create: jest.fn().mockResolvedValue({data: {html_url: 'html_url'}})
         }
     }
 
@@ -29,11 +29,11 @@ describe('Create Issue', () => {
     }
     const response = await createIssue(state)
     expect(response.data.html_url).toEqual('html_url');
-    expect(response.title).toEqual('title')
-    expect(response.body).toEqual('test value1: patch value2: filename value3: branchUrl value4: installRepo')
-    expect(response.repo).toEqual('issueRepo')
-    expect(response.labels).toEqual('label-1')
-    expect(response.owner).toEqual('owner')
+    expect(api.issues.create.mock.calls[0][0].title).toEqual('title')
+    expect(api.issues.create.mock.calls[0][0].body).toEqual('test value1: patch value2: filename value3: branchUrl value4: installRepo')
+    expect(api.issues.create.mock.calls[0][0].repo).toEqual('issueRepo')
+    expect(api.issues.create.mock.calls[0][0].labels).toEqual('label-1')
+    expect(api.issues.create.mock.calls[0][0].owner).toEqual('owner')
   })
   
   test('create issue request fails', async () => {
