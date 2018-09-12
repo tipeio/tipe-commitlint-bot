@@ -28,8 +28,8 @@ describe('Get Config', () => {
     }}
     context.log.mockReset();
     const config = await getConfig({...context, ...github})
-    // expect.assertions(4)
-    // expect(config).toEqual(module.exports = {})
+    expect.assertions(4)
+    expect(config).toEqual(module.exports = {})
     expect(fs.existsSync('src/commitlint-custom.config.js')).toBeTruthy()
     expect(context.log.mock.calls[0][0]).toEqual('Existing custom config not present')
     expect(context.log.mock.calls.length).toBe(1);

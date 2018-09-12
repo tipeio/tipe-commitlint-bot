@@ -1,4 +1,5 @@
 const fs = require('fs')
+const path = require('path')
 
 async function getConfig(context){
   const { pull_request: pr } = context.payload
@@ -25,7 +26,9 @@ async function getConfig(context){
   }
 
   if(fs.existsSync('src/commitlint-custom.config.js')){
+    // delete require.cache[require.resolve('./commitlint-custom.config.js')]
     config = require('./commitlint-custom.config.js')
+
     if(config.extends){
       context.log('Extends not supported, using default config.')
       config = require('./commitlint.config.js')
