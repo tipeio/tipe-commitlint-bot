@@ -1,5 +1,4 @@
 const fs = require('fs')
-const debug = require('debug')('pr-change')
 const lintCommits = require('./lint')
 const checkWIP = require('./wip')
 const format = require('./format')

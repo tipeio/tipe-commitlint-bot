@@ -1,8 +1,6 @@
 const readFileSync = require('fs').readFileSync
 const pathResolve = require('path').resolve
 
-const getDebug = require('debug')
-
 const getBranch = require('./get-branch')
 const getCommit = require('./get-commit')
 const createIssue = require('./create-issue')
@@ -17,24 +15,22 @@ const template = readFileSync(
 async function handleCreateEvent(context) {
   const { ref, ref_type: refType, repository } = context.payload
   const config = await context.config('first-timers.yml', {labels: ['first-tipers-only'], repository: repository.name})
-  const debug = getDebug(
-    `probot:first-timers:${repository.full_name.toLowerCase()}`
-  )
-  debug(`webhook received for ${refType} "${ref}"`)
+  const debugMessage = `probot:first-timers:${repository.full_name.toLowerCase()}`
+  context.log.debug({data: debugMessage}, `webhook received for ${refType} "${ref}"`)
 
   // run only for newly created branches that start with "first-timers-"
   if (refType !== 'branch') {
-    debug('ignoring: not a branch')
+    context.log.debug({data: debugMessage}, 'ignoring: not a branch')
     return
   }
   if (!/^first-tipers-/.test(ref)) {
-    debug(`ignoring: "${ref}" does not match /^first-tipers-/`)
+    context.log.debug({data: debugMessage}, `ignoring: "${ref}" does not match /^first-tipers-/`)
     return
   }
 
   const state = {
     api: context.github,
-    debug,
+    debug: (message) => context.log.debug({data: debugMessage}, message),
     owner: repository.owner.login,
     installRepo: repository.name,
     branch: ref,
@@ -52,7 +48,7 @@ async function handleCreateEvent(context) {
     .then(createIssue.bind(null, state))
     .then(deleteBranch.bind(null, state))
     .catch(error => {
-      debug(error.toString())
+      context.log.error(error)
     })
 }
 
