@@ -7,7 +7,7 @@ async function lintCommits(context) {
   const { paginate, pullRequests} = context.github
   let lintStatus
   const config = await getConfig(context);
-  console.log("CONFIZG", config)
+
   await paginate(pullRequests.getCommits(pull), async ({ data }) => {
     // create an empty summary
     const report = { valid: true, commits: [] }
