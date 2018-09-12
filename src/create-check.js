@@ -1,5 +1,3 @@
-const debug = require('debug')('create-check')
-
 async function createCheck(
   context,
   finalState,
@@ -26,7 +24,7 @@ async function createCheck(
     )
   } catch (error) {
     if (error.code === 403) {
-      debug('resource not accessible, creating status instead')
+      context.log.warn('resource not accessible, creating status instead')
       // create status if creating check fails
       const params = {
         sha: pr.head.sha,
