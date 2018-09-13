@@ -6,7 +6,7 @@ const atob = require('atob');
 async function getConfig(context){
   const { pull_request: pr } = context.payload
   const params = {
-    path: 'commitlint.config.js',
+    path: 'commitlint.config.json',
     ref: pr.head.ref
   }
 
@@ -14,7 +14,7 @@ async function getConfig(context){
   // check if pr contains custom config file
   try {
     const customConfig = await context.github.repos.getContent(context.repo(params))
-    decodedCustomConfig = eval(atob(customConfig.data.content))
+    decodedCustomConfig = JSON.parse(atob(customConfig.data.content))
   } catch (e) {
     context.log('Using default config')
     return defaultConfig;
