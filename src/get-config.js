@@ -1,5 +1,5 @@
-const fs = require('fs')
-const path = require('path')
+const defaultConfig = require('./commitlint-custom.config.js')
+const Base64 = require('js-base64').Base64;
 
 async function getConfig(context){
   const { pull_request: pr } = context.payload
@@ -7,37 +7,22 @@ async function getConfig(context){
     path: 'commitlint.config.js',
     ref: pr.head.ref
   }
-  let config;
 
-  // delete custom config file that may have been created by previous event
-  try {
-    fs.unlinkSync('src/commitlint-custom.config.js')
-  } catch(e){
-    context.log('Existing custom config not present')
-  }
-
-  // check if pr contains custom config file and write it to src
+  // check if pr contains custom config file
   try {
     const customConfig = await context.github.repos.getContent(context.repo(params))
-    let buff = Buffer.from(customConfig.data.content, 'base64')
-    fs.writeFileSync('src/commitlint-custom.config.js', buff)
+    const decoded = Base64.decode(customConfig.data.content);
   } catch (e) {
     context.log('Using default config')
+    return defaultConfig;
   }
 
-  if(fs.existsSync('src/commitlint-custom.config.js')){
-    // delete require.cache[require.resolve('./commitlint-custom.config.js')]
-    config = require('./commitlint-custom.config.js')
-
-    if(config.extends){
-      context.log('Extends not supported, using default config.')
-      config = require('./commitlint.config.js')
-    }  
-  } else {
-    config = require('./commitlint.config.js')
+  if(decoded.extends){
+    context.log('Extends not supported, using default config.')
+    return defaultConfig;
   }
 
-  return config;
+  return decoded
 
 }
 

@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@commitlint/core": "^7.1.2",
+    "js-base64": "^2.4.9",
     "probot": "^7.0.0"
   },
   "devDependencies": {
