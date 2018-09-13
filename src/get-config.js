@@ -16,12 +16,10 @@ async function getConfig(context){
     const customConfig = await context.github.repos.getContent(context.repo(params))
     decodedCustomConfig = JSON.parse(atob(customConfig.data.content))
   } catch (e) {
-    context.log('Using default config')
     return defaultConfig;
   }
 
   if(decodedCustomConfig.extends){
-    context.log('Extends not supported, using default config.')
     return defaultConfig;
   }
 
