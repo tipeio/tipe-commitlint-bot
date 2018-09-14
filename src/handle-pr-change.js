@@ -2,7 +2,7 @@ const fs = require('fs')
 const lintCommits = require('./lint')
 const checkWIP = require('./wip')
 const format = require('./format')
-const createCheck = require('./createCheck')
+const createCheck = require('./create-check')
 
 async function handlePRChange(context) {
   const pr = context.payload.pull_request
