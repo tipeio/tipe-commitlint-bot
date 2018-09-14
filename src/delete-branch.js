@@ -1,22 +1,26 @@
 function deleteBranch(state) {
+  const ref = `heads/${state.branch}`
   return state.api.gitdata
     .deleteReference({
       owner: state.owner,
       repo: state.installRepo,
-      ref: 'heads/' + state.branch
+      ref
     })
     .then(result => {
-      state.debug(`branch deleted: heads/${state.branch}`)
+      state.debug(`branch deleted: ${ref}`)
       return state
     })
     .catch(err => {
-      if (err.code === 403)
+      if (err.code === 403) {
         state.debug(
           `could not delete "${
             state.branch
           }" branch, lacking permission for owner "${state.owner}"`
         )
-      else state.debug(err.toString())
+      }
+      else {
+        state.debug(err.toString())
+      }
       return err
     })
 }
