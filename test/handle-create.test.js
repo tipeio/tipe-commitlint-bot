@@ -1,4 +1,4 @@
-const handleCreate = require('../src/handle-create')
+const handleCreateEvent = require('../src/handle-create-event')
 
 describe('Handle Create Event', () => {
   test('should return for a ref that is not a branch', async () => {
@@ -15,7 +15,7 @@ describe('Handle Create Event', () => {
         debug: jest.fn()
       }
     }
-    const res = await handleCreate(context)
+    const res = await handleCreateEvent(context)
     expect(res).toBeUndefined()
   })
   test('should return for a branch that does not match first-tipers', async () => {
@@ -32,7 +32,7 @@ describe('Handle Create Event', () => {
         debug: jest.fn()
       }
     }
-    const res = await handleCreate(context)
+    const res = await handleCreateEvent(context)
     expect(res).toBeUndefined()
 
   })

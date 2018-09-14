@@ -29,6 +29,8 @@ function getCommit(state) {
           state.commit.branchUrl
         }"`
       )
+
+      return state
     })
 }
 

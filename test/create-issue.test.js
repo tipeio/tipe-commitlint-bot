@@ -27,8 +27,8 @@ describe('Create Issue', () => {
       },
       template: 'test value1: $DIFF value2: $FILENAME value3: $BRANCH_URL value4: $REPO'
     }
-    const response = await createIssue(state)
-    expect(response.data.html_url).toEqual('html_url');
+    await createIssue(state)
+    expect(state.debug.mock.calls[1][0]).toEqual(`issue created: html_url`);
     expect(api.issues.create.mock.calls[0][0].title).toEqual('title')
     expect(api.issues.create.mock.calls[0][0].body).toEqual('test value1: patch value2: filename value3: branchUrl value4: installRepo')
     expect(api.issues.create.mock.calls[0][0].repo).toEqual('issueRepo')

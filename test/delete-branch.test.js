@@ -18,8 +18,8 @@ describe('Delete Branch', () => {
       installRepo: 'installRepo'
     }
   
-    const response = await deleteBranch(state)
-    expect(response.meta.status).toEqual('204 No Content')
+    await deleteBranch(state)
+    expect(state.debug.mock.calls[0][0]).toEqual(`branch deleted: heads/branch`)
   })
   
   test('delete branch request fails 403', async () => {

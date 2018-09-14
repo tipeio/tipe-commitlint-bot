@@ -27,7 +27,7 @@ describe('Get Template Content', () => {
     expect(state.template).toEqual('content')
   })
   
-  test('does not get content if URL does not exist', async () => {
+  test('should return the state if URL does not exist', async () => {
     const api = {
       repos: {
         getContent: jest.fn()
@@ -41,7 +41,7 @@ describe('Get Template Content', () => {
       customTemplateUrl: null
     }
   
-    expect(getTemplateContent(state)).toBeUndefined()
+    expect(getTemplateContent(state)).toEqual(state)
 
   })
 })

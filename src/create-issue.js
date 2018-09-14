@@ -17,10 +17,9 @@ function createIssue(state) {
       body: content,
       labels: state.labels
     })
-
     .then(result => {
       state.debug(`issue created: ${result.data.html_url}`)
-      return result
+      return state
     })
 }
 

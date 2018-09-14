@@ -43,13 +43,15 @@ async function handleCreateEvent(context) {
   }
 
   return getBranch(state)
-    .then(() => getTemplateContent(state))
-    .then(() => getCommit(state))
-    .then(() => createIssue(state))
-    .then(() => deleteBranch(state))
-    .catch(error => {
-      context.log.error(error)
+    .then(getTemplateContent)
+    .then(getCommit)
+    .then(createIssue)
+    .then(deleteBranch)
+    .catch(err => {
+      // log
+      return Promise.reject(err)
     })
 }
+
 
 module.exports = handleCreateEvent

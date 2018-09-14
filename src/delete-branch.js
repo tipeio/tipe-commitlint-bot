@@ -5,10 +5,9 @@ function deleteBranch(state) {
       repo: state.installRepo,
       ref: 'heads/' + state.branch
     })
-
     .then(result => {
       state.debug(`branch deleted: heads/${state.branch}`)
-      return result
+      return state
     })
     .catch(err => {
       if (err.code === 403)
