@@ -9,6 +9,6 @@ module.exports = app => {
     'pull_request.edited',
     'pull_request.synchronize'
   ]
-  app.on(events, handlePRChange)
+  app.on(prEvents, handlePRChange)
   app.on('create', handleCreate)
 }
