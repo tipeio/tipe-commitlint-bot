@@ -43,10 +43,10 @@ async function handleCreateEvent(context) {
   }
 
   return getBranch(state)
-    .then(getTemplateContent.bind(null, state))
-    .then(getCommit.bind(null, state))
-    .then(createIssue.bind(null, state))
-    .then(deleteBranch.bind(null, state))
+    .then(() => getTemplateContent(state))
+    .then(() => getCommit(state))
+    .then(() => createIssue(state))
+    .then(() => deleteBranch(state))
     .catch(error => {
       context.log.error(error)
     })

@@ -19,7 +19,7 @@ $DIFF
 ``````
 
 
-- [ ] 💾 **Commit** your changes
+- [ ] 💾 **Commit** your changes. Check out our commit message conventions [here](https://github.com/tipeio/tipe-conventions/blob/master/COMMIT_CONVENTION.md)
 
 - [ ] 🔀 **Start a Pull Request**. There are two ways how you can start a pull request:
 

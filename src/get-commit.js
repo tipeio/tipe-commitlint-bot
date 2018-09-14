@@ -7,7 +7,6 @@ function getCommit(state) {
       repo: state.installRepo,
       sha: state.sha
     })
-
     .then(function(result) {
       const { filename, patch, blob_url: blobUrl } = result.data.files[0]
       var branchUrl = blobUrl.replace(
