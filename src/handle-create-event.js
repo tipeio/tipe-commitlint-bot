@@ -48,10 +48,8 @@ async function handleCreateEvent(context) {
     .then(createIssue)
     .then(deleteBranch)
     .catch(err => {
-      // log
       return Promise.reject(err)
     })
 }
-
 
 module.exports = handleCreateEvent

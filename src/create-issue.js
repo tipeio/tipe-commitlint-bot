@@ -1,11 +1,9 @@
+const createTemplate = require('./create-template')
+
 function createIssue(state) {
-  const { filename, patch, branchUrl, message, authorLogin } = state.commit
-  const content = state.template
-    .replace(/\$DIFF/, patch)
-    .replace(/\$FILENAME/, filename)
-    .replace(/\$BRANCH_URL/, branchUrl)
-    .replace(/\$REPO/, state.installRepo)
-    .replace(/\$AUTHOR/, `@${authorLogin}`)
+  const { message, patch, filename, branchUrl, authorLogin } = state.commit
+  const title = message.split('\n\n')[0]
+  const content = createTemplate(state.template, state.installRepo, patch, filename, branchUrl, authorLogin)
 
   state.debug('creating issue...')
 
@@ -13,7 +11,7 @@ function createIssue(state) {
     .create({
       owner: state.owner,
       repo: state.issueRepo,
-      title: message.split('\n\n')[0],
+      title,
       body: content,
       labels: state.labels
     })
