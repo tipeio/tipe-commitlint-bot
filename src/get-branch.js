@@ -6,12 +6,12 @@ function getBranch(state) {
       repo: state.installRepo,
       branch: state.branch
     })
-
     .then(function(result) {
       state.sha = result.data.commit.sha
       state.debug(
         `"${state.branch}" branch found, last commit’s sha: ${state.sha}`
       )
+      return state
     })
 }
 

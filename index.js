@@ -1,5 +1,5 @@
 const handlePRChange = require('./src/handle-pr-change')
-const handleCreate = require('./src/handle-create')
+const handleCreateEvent = require('./src/handle-create-event')
 
 module.exports = app => {
   // For more information on building apps:
@@ -10,5 +10,5 @@ module.exports = app => {
     'pull_request.synchronize'
   ]
   app.on(prEvents, handlePRChange)
-  app.on('create', handleCreate)
+  app.on('create', handleCreateEvent)
 }
