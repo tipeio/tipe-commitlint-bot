@@ -10,7 +10,10 @@ describe('Handle Create Event', () => {
         name: 'test',
         full_name: 'olivia/test'
       }},
-      config: jest.fn()
+      config: jest.fn(),
+      log: {
+        debug: jest.fn()
+      }
     }
     const res = await handleCreate(context)
     expect(res).toBeUndefined()
@@ -24,7 +27,10 @@ describe('Handle Create Event', () => {
         name: 'test',
         full_name: 'olivia/test'
       }},
-      config: jest.fn()
+      config: jest.fn(),
+      log: {
+        debug: jest.fn()
+      }
     }
     const res = await handleCreate(context)
     expect(res).toBeUndefined()

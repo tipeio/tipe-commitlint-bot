@@ -44,7 +44,8 @@ const successContext = {
     owner: 'oliviaoddo',
     repo: 'test',
     ...data
-  })
+  }),
+
 }
 
 const errorContext = {
@@ -68,7 +69,10 @@ const errorContext = {
     owner: 'oliviaoddo',
     repo: 'test',
     ...params
-  })
+  }),
+  log: {
+    warn: jest.fn()
+  }
 }
 
 describe('The createCheck function', () => {
